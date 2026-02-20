@@ -18,5 +18,3 @@ data_female <- Glioblastoma_2013_cleaned[Glioblastoma_2013_cleaned$Sex == "Femal
 
 View(data_female)
 View(data_male)
-
-
