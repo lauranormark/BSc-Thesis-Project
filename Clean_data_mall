@@ -1,0 +1,20 @@
+# Import dataset
+setwd('Script') #ställ in wd för där din data finns, i dett fall var det script
+NAMNDATA <- read.table("DATA.tsv", header=TRUE, sep="\t")
+View(NAMNDATA)
+
+# Drop unnecessairy variable, se nedan
+drop <- c("Study.ID","Patient.ID", "Sample.ID", "Number.of.Samples.Per.Patient", "Sample.Type", "Somatic.Status", "therapy")
+NAMNDATA_cleaned = NAMNDATA[,!(names(NAMNDATA) %in% drop)]
+View(NAMNDATA_cleaned) # Noter att rengjord data är "NAMNDATA_cleaned"
+
+# Check sex correspondance to variable. I detta fall CIMP
+table(NAMNDATA_cleaned$Sex,
+      NAMNDATA:cleaned$G.CIMP..Methylation)
+
+# Split data for males and females
+data_male <- NAMNDATA_cleaned[NAMNDATA_cleaned$Sex == "Male",]
+data_female <- NAMNDATA_cleaned[NAMNDATA_cleaned$Sex == "Female",]
+
+View(data_female)
+View(data_male)
