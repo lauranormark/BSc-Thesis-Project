@@ -11,7 +11,6 @@ View(Glioblastoma_2013_cleaned)
 # Check sex correspondance to CIMP
 table(Glioblastoma_2013$Sex,
       Glioblastoma_2013$G.CIMP..Methylation)
-HEAD
 
 # split data for males and females
 data_male <- Glioblastoma_2013_cleaned[Glioblastoma_2013_cleaned$Sex == "Male",]
