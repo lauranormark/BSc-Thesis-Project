@@ -1,5 +1,5 @@
 # Import dataset
-setwd('Script') #ställ in wd för där din data finns, i dett fall var det script
+setwd('Data') #ställ in wd för där din data finns, i dett fall var det script
 NAMNDATA <- read.table("DATA.tsv", header=TRUE, sep="\t")
 View(NAMNDATA)
 
@@ -13,8 +13,8 @@ table(NAMNDATA_cleaned$Sex,
       NAMNDATA:cleaned$G.CIMP..Methylation)
 
 # Split data for males and females
-data_male <- NAMNDATA_cleaned[NAMNDATA_cleaned$Sex == "Male",]
-data_female <- NAMNDATA_cleaned[NAMNDATA_cleaned$Sex == "Female",]
+NAMNDATA_male <- NAMNDATA_cleaned[NAMNDATA_cleaned$Sex == "Male",]
+NAMNDATA_female <- NAMNDATA_cleaned[NAMNDATA_cleaned$Sex == "Female",]
 
-View(data_female)
-View(data_male)
+View(NAMNDATA_female)
+View(NAMNDATA_male)
