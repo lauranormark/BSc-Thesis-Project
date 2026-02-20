@@ -8,4 +8,5 @@ Glioblastoma_2013_cleaned = Glioblastoma_2013[,!(names(Glioblastoma_2013) %in% d
 View(Glioblastoma_2013_cleaned)
 
 # Group into males and females
-
+table(Glioblastoma_2013$Sex,
+      Glioblastoma_2013$G.CIMP..Methylation)
