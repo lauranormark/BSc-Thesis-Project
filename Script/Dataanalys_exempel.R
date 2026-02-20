@@ -1,4 +1,5 @@
 # Import dataset
+setwd('Script')
 Glioblastoma_2013 <- read.table("gbm_tcga_pub2013_clinical_data.tsv", header=TRUE, sep="\t")
 View(Glioblastoma_2013)
 
