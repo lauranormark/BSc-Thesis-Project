@@ -4,12 +4,12 @@ tcga2025 <- read.table("gbm_tcga_pub2025_clinical_data.tsv", header=TRUE, sep="\
 
 View(tcga2025)
 summary(tcga2025)
-table(tcga2025$Sex) # Undersök vilka variabler som finns per kolumn
+table(tcga2025$Is.FFPE) # Undersök vilka variabler som finns per kolumn
 
 # Drop unnecessairy variable, se nedan
 drop <- c("Study.ID",
           "Patient.ID",
-          "Sample:ID",
+          "Sample.ID",
           "Biopsy.Site",
           "Cancer.Type",
           "Cancer.Type.Detailed",
@@ -31,15 +31,22 @@ drop <- c("Study.ID",
           "Race.Category",
           "Number.of.Samples.Per.Patient",
           "Sample.Type",
-          "Sample.type.id"
+          "Sample.type.id",
+          "Morphology",
+          "Is.FFPE"
 )
 
 tcga2025_cleaned = tcga2025[,!(names(tcga2025) %in% drop)]
-View(NAMNDATA_cleaned) # Noter att rengjord data är "NAMNDATA_cleaned"
+tcga2025_cleaned <- tcga2025_cleaned[, -11]
+View(tcga2025_cleaned) # Noter att rengjord data är "NAMNDATA_cleaned"
 
-# Check sex correspondance to variable. I detta fall CIMP
-table(NAMNDATA_cleaned$Sex,
-      NAMNDATA:cleaned$G.CIMP..Methylation)
+# Check sex correspondance to variable
+# ICD classifiation pekar på svårhetsgraden av tumören. För MB är alla C71 (från C71.0 - C71.9 där detta indikerar vart tumören är)
+table(tcga2025_cleaned$Sex,
+      tcga2025_cleaned$ICD.10.Classification)
+
+table(tcga2025_cleaned$Sex,
+      tcga2025_cleaned$TMB..nonsynonymous.)
 
 # Split data for males and females
 NAMNDATA_male <- NAMNDATA_cleaned[NAMNDATA_cleaned$Sex == "Male",]
