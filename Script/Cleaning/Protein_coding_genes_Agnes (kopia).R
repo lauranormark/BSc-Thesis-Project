@@ -17,6 +17,7 @@ genes <- mrna$Gene_Symbol # selekterar första kolumnen
 genes <- unique(genes) # tar bort duplikat av rader/element
 genes <- genes[!is.na(genes) & genes != ""] # Tar bort NA och tomma rader/element
 
+sum(duplicated(genes))
 
 # Frågar Ensembl: “For this list of gene symbols, tell me their gene type (biotype).” och storar det i annot
 annot <- getBM(
@@ -31,7 +32,9 @@ head(annot) # Undersök hur annot ser ut
 # Filtrerar för de gener som säger att de är proteinkodande samt ser till att de bara upprepas en gång
 # Skapar en vektor med namnet på alla gener som är protein-kodande
 protein_genes <- unique(annot$hgnc_symbol[annot$gene_biotype == "protein_coding"])
-head(protein_genes) # visade sig vara totalt 18361 gener vilket stämmer med litteraturen
+head(protein_genes) # visade sig vara totalt 19361 gener vilket stämmer med litteraturen
+length(protein_genes)
+View(protein_genes)
 
 # Subsettar expressionsdatan med enbart de gener som kodar för proteiner 
 mrna_protein <- mrna[mrna$Gene_Symbol %in% protein_genes, ]
