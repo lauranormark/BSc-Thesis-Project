@@ -1,5 +1,5 @@
 getwd() #Ska vara i ens egna solodev 
-mrna <- read.delim("Data/data_mrna_seq_tpm.txt",
+mrna <- read.delim("data_mrna_seq_tpm.txt",
                    header = TRUE,
                    stringsAsFactors = FALSE,
                    check.names = FALSE)
@@ -43,7 +43,7 @@ which(names(mrna_geneSymbol_clean) == "Gene_Symbol") # checkar att allt gick bra
 
 # Laddar ner datan igen i ett nytt data-set som heter samma sak fast med _geneSymbol 
 write.table(mrna_geneSymbol_clean,
-            file = "Data/data_mrna_seq_tpm_geneSymbols.txt",
+            file = "Datafiler/data_mrna_seq_tpm_geneSymbols.txt",
             sep = "\t",
             quote = FALSE,
             row.names = FALSE)

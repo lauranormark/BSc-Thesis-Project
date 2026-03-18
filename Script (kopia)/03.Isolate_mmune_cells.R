@@ -8,7 +8,7 @@ library(ConsensusTME)
 
 #Laddar ner mrna-data med proteinkodande gener 
 mrna_proteins <- read.delim(
-  "Data/data_mrna_seq_tpm_proteinCoding.txt",
+  "Datafiler/data_mrna_seq_tpm_proteinCoding.txt",
   header = TRUE,
   stringsAsFactors = FALSE,
   check.names = FALSE
@@ -37,7 +37,7 @@ dim(immune_res) #Stämmer med 295 patienter och 19 rader totalt
 
 write.table(
   immune_res,
-  file = "Data/mrna_immune_cell_abundance.txt",
+  file = "Datafiler/mrna_immune_cell_abundance.txt",
   sep = "\t",
   quote = FALSE
 )
