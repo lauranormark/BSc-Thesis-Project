@@ -7,7 +7,7 @@ library(dplyr)
 
 #laddar ner datan
 data_immunoabundance <- read.delim(
-  "Data/merged_immunoabundance_clinical.txt",
+  "Filis/Datafiler/merged_immunoabundance_clinical.txt",
   header = TRUE,
   check.names = FALSE
 )
@@ -19,7 +19,7 @@ violin_plot <- data_immunoabundance %>%
   geom_violin(trim = FALSE) +
   geom_boxplot(width = 0.2, outlier.shape = NA) +
   stat_compare_means(
-    method        = "t.test",
+    method        = "wilcox.test",
     label         = "p.format",   # visar faktiskt p-värde
     label.x       = 1.5,          # centrerar p-värdet över violinerna
     hide.ns       = FALSE
@@ -42,7 +42,7 @@ violin_plot2 <- data_immunoabundance %>%
   geom_violin(trim = FALSE) +
   geom_boxplot(width = 0.2, outlier.shape = NA) +
   stat_compare_means(
-    method        = "t.test",
+    method        = "wilcox.test",
     label         = "p.format",   # visar faktiskt p-värde
     label.x       = 1.5,          # centrerar p-värdet över violinerna
     hide.ns       = FALSE
@@ -70,8 +70,8 @@ ggsave(
   width    = 10, height = 7
 )
 
-# t_tester 
-t_results <- immune_long %>%
+# wilcox resultat itället
+wilcox_results <- immune_long %>%
   filter(!is.na(SEX), SEX %in% c("Female", "Male")) %>%  # <-- anpassa till dina exakta värden
   group_by(CELL_TYPE) %>%
   summarise(
@@ -79,13 +79,13 @@ t_results <- immune_long %>%
     n_female      = sum(SEX == "Female"),
     mean_male     = mean(ABUNDANCE[SEX == "Male"],   na.rm = TRUE),
     mean_female   = mean(ABUNDANCE[SEX == "Female"], na.rm = TRUE),
-    p_value       = t.test(ABUNDANCE ~ SEX)$p.value
+    p_value       = wilcox.test(ABUNDANCE ~ SEX)$p.value
   )
 
-t_results
+wilcox_results
 
-write.table(t_results, #male gene expression 
-            file = "Data/t_result_sex_immunoabundance.txt",
+write.table(wilcox_results, #male gene expression 
+            file = "Filis/Datafiler/wilcox_t_sex_immunoabundance.txt",
             sep = "\t",
             quote = FALSE,
             row.names = FALSE)

@@ -7,7 +7,7 @@ install.packages("dplyr")
 
 #Läs in datan som data frame 
 immune <- read.delim(
-  "Datafiler/mrna_immune_cell_abundance.txt",
+  "Filis/Datafiler/mrna_immune_cell_abundance.txt",
   header = TRUE,
   check.names = FALSE
 )
@@ -37,7 +37,7 @@ head(immune_long) # checkar så det ser rätt ut
 dim(immune_long)
 
 #lägg till clinical data för att kunna jämföra
-clinical <- read.delim("data_clinical_patient.txt",
+clinical <- read.delim("Filis/data_clinical_patient.txt",
                        header = TRUE, 
                        comment.char = "#", 
                        stringsAsFactors = FALSE, 
@@ -51,8 +51,6 @@ clinical <- clinical[, c("PATIENT_ID",
                          "SEX",
                          "OS_STATUS",
                          "OS_MONTHS",
-                         "DFS_STATUS", # ingen data
-                         "DFS_MONTHS", # ingen data (pes lite)
                          "DISEASE_TYPE",
                          "DAYS_TO_DEATH",
                          "PRIOR_TREATMENT")]
@@ -75,7 +73,7 @@ table(immune_long$CELL_TYPE) # totatl 286 patienter
 immune_long$ABUNDANCE <- as.numeric(immune_long$ABUNDANCE)
 
 write.table(immune_long, #male gene expression 
-            file = "Datafiler/merged_immunoabundance_clinical.txt",
+            file = "Filis/Datafiler/merged_immunoabundance_clinical.txt",
             sep = "\t",
             quote = FALSE,
             row.names = FALSE)
