@@ -81,7 +81,7 @@ km_os_sex
 
 # ── 5. KAPLAN-MEIER: OS STRATIFIERAT PÅ IMMUNCELLABUDANS (VALFRI CELLTYP), FEMALES ────
 # Byt ut "B_cell" mot valfri celltyp i ditt dataset, t.ex. "CD8_T_cell"
-target_cell <- "Immune_Score"  # <-- Ändra till önskad celltyp
+target_cell <- "Fibroblasts"  # <-- Ändra till önskad celltyp
 
 # FEMALES
 unique(data_immunoabundance_female$CELL_TYPE)
