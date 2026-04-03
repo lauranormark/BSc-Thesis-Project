@@ -94,7 +94,7 @@ km_dfs_sex
 # Byt ut "B_cell" mot valfri celltyp i ditt dataset, t.ex. "CD8_T_cell"
 
 unique(data_immunoabundance$CELL_TYPE)
-target_cell <- "Neutrophils"  # <-- Ändra till önskad celltyp
+target_cell <- "Mast_cells"  # <-- Ändra till önskad celltyp
 
 # Hämta abundansen för vald celltyp per patient
 cell_abund <- data_immunoabundance %>%
