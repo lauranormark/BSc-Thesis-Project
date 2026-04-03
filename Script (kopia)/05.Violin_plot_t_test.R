@@ -7,7 +7,7 @@ library(dplyr)
 
 #laddar ner datan
 data_immunoabundance <- read.delim(
-  "Filis/Datafiler/merged_immunoabundance_clinical.txt",
+  "Data/merged_immunoabundance_clinical.txt",
   header = TRUE,
   check.names = FALSE
 )
@@ -85,7 +85,7 @@ wilcox_results <- immune_long %>%
 wilcox_results
 
 write.table(wilcox_results, #male gene expression 
-            file = "Filis/Datafiler/wilcox_t_sex_immunoabundance.txt",
+            file = "Data/wilcox_t_sex_immunoabundance.txt",
             sep = "\t",
             quote = FALSE,
             row.names = FALSE)
