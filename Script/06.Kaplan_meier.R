@@ -1,5 +1,4 @@
 getwd()
-#setwd("AgnesVärld")
 
 #Install packages if needed:
 #install.packages("survival")
@@ -23,17 +22,17 @@ data_immunoabundance_male   <- data_immunoabundance[data_immunoabundance$SEX == 
 # Kaplan-Meier behöver en rad per patient (inte long-format).
 # Vi tar ut unika patienter med klinisk data.
 clinical_unique <- data_immunoabundance %>%
-  select(PATIENT_ID, AGE, SEX, OS_STATUS, OS_MONTHS) %>%
+  dplyr::select(PATIENT_ID, AGE, SEX, OS_STATUS, OS_MONTHS) %>%
   distinct(PATIENT_ID, .keep_all = TRUE)
 
 # for FEMALES
 clinical_unique_female <- data_immunoabundance_female %>%
-  select(PATIENT_ID, AGE, SEX, OS_STATUS, OS_MONTHS) %>%
+  dplyr::select(PATIENT_ID, AGE, SEX, OS_STATUS, OS_MONTHS) %>%
   distinct(PATIENT_ID, .keep_all = TRUE)
 
 # for MALES
 clinical_unique_male <- data_immunoabundance_male %>%
-  select(PATIENT_ID, AGE, SEX, OS_STATUS, OS_MONTHS) %>%
+  dplyr::select(PATIENT_ID, AGE, SEX, OS_STATUS, OS_MONTHS) %>%
   distinct(PATIENT_ID, .keep_all = TRUE)
 
 dim(clinical_unique) # Ska motsvara antal unika patienter
@@ -52,7 +51,7 @@ clinical_unique$OS_event  <- ifelse(grepl("1|DECEASED|Dead",  clinical_unique$OS
 clinical_unique_female$OS_event  <- ifelse(grepl("1|DECEASED|Dead",  clinical_unique_female$OS_STATUS,  ignore.case = TRUE), 1, 0)
 clinical_unique_male$OS_event  <- ifelse(grepl("1|DECEASED|Dead",  clinical_unique_male$OS_STATUS,  ignore.case = TRUE), 1, 0)
 
-# ── 3. KAPLAN-MEIER: OVERALL SURVIVAL BY SEX ─────────────────────────────────
+# ── 2. OVERALL SURVIVAL BY SEX ─────────────────────────────────
 
 fit_os_sex <- survfit(
   Surv(OS_MONTHS, OS_event) ~ SEX,
@@ -83,17 +82,19 @@ km_os_sex
 # Byt ut "B_cell" mot valfri celltyp i ditt dataset, t.ex. "CD8_T_cell"
 target_cell <- "Fibroblasts"  # <-- Ändra till önskad celltyp
 
-# FEMALES
+
+# ---------- FEMALES -------------------------------------------------------------
 unique(data_immunoabundance_female$CELL_TYPE)
+
 # Hämta abundansen för vald celltyp per patient
 cell_abund_female <- data_immunoabundance_female %>%
   filter(CELL_TYPE == target_cell) %>%
-  select(PATIENT_ID, ABUNDANCE)
+  dplyr::select(PATIENT_ID, ABUNDANCE)
 
 # Merga med klinisk data
 clinical_cell_female <- merge(clinical_unique_female, cell_abund_female, by = "PATIENT_ID")
 
-# ── Bestäm optimal cutoff baserat på survival ───────────────────────────────
+# Bestäm optimal cutoff baserat på survival
 cutpoint_female <- surv_cutpoint(
   clinical_cell_female,
   time = "OS_MONTHS",
@@ -130,18 +131,18 @@ km_os_cell_female <- ggsurvplot(
 
 km_os_cell_female
 
-#MALES
+# ---------- MALES -------------------------------------------------------------
 unique(data_immunoabundance_male$CELL_TYPE)
 
 # Hämta abundansen för vald celltyp per patient
 cell_abund_male <- data_immunoabundance_male %>%
   filter(CELL_TYPE == target_cell) %>%
-  select(PATIENT_ID, ABUNDANCE)
+  dplyr::select(PATIENT_ID, ABUNDANCE)
 
 # Merga med klinisk data
 clinical_cell_male <- merge(clinical_unique_male, cell_abund_male, by = "PATIENT_ID")
 
-# ── Bestäm optimal cutoff baserat på survival ───────────────────────────────
+# Bestäm optimal cutoff baserat på survival
 cutpoint_male <- surv_cutpoint(
   clinical_cell_male,
   time = "OS_MONTHS",
@@ -151,7 +152,7 @@ cutpoint_male <- surv_cutpoint(
 
 clinical_cell_grouped_male <- surv_categorize(cutpoint_male)
 
-table(clinical_cell_grouped$ABUNDANCE) # kontrollera gruppstorlek
+table(clinical_cell_grouped_male$ABUNDANCE) # kontrollera gruppstorlek
 cutpoint_male$cutpoint                     # visar vilken cutoff som valdes
 
 fit_os_cell_male <- survfit(
@@ -184,4 +185,25 @@ km_os_cell_male
 survdiff(Surv(OS_MONTHS, OS_event) ~ SEX, data = clinical_unique)
 
 # OS by immune cell abundance
-survdiff(Surv(OS_MONTHS, OS_event) ~ ABUNDANCE, data = clinical_cell_grouped)
+survdiff(Surv(OS_MONTHS, OS_event) ~ ABUNDANCE, data = clinical_cell_grouped_female)
+survdiff(Surv(OS_MONTHS, OS_event) ~ ABUNDANCE, data = clinical_cell_grouped_male)
+
+
+# ── 8. SAVE TEH PLOTS ─────────────────────────────────────────────────────────
+
+library(ggpubr)
+
+# OS by Sex
+ggexport(km_os_sex,
+         filename = "Plots/Kaplan-Meier_OS_Sex.pdf",
+         width = 10, height = 7)
+
+# OS by Fibroblast abundance — Males
+ggexport(km_os_cell_male,
+         filename = "Plots/Kaplan-Meier_OS_male_Fibroblasts.pdf",
+         width = 10, height = 7)
+
+# OS by Fibroblast abundance — Females
+ggexport(km_os_cell_female,
+         filename = "Plots/Kaplan-Meier_OS_female_Fibroblasts.pdf",
+         width = 10, height = 7)

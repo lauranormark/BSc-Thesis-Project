@@ -1,13 +1,13 @@
 getwd()
 #Installera paket som är nödvändig
-install.packages("ggplot2")
-install.packages("ggpubr")
-install.packages("tidyr")
-install.packages("dplyr")
+#install.packages("ggplot2")
+#install.packages("ggpubr")
+#install.packages("tidyr")
+#install.packages("dplyr")
 
 #Läs in datan som data frame 
 immune <- read.delim(
-  "Filis/Datafiler/mrna_immune_cell_abundance.txt",
+  "Data/mrna_immune_cell_abundance.txt",
   header = TRUE,
   check.names = FALSE
 )
@@ -37,7 +37,7 @@ head(immune_long) # checkar så det ser rätt ut
 dim(immune_long)
 
 #lägg till clinical data för att kunna jämföra
-clinical <- read.delim("Filis/data_clinical_patient.txt",
+clinical <- read.delim("Data/data_clinical_patient.txt",
                        header = TRUE, 
                        comment.char = "#", 
                        stringsAsFactors = FALSE, 
@@ -73,8 +73,7 @@ table(immune_long$CELL_TYPE) # totatl 286 patienter
 immune_long$ABUNDANCE <- as.numeric(immune_long$ABUNDANCE)
 
 write.table(immune_long, #male gene expression 
-            file = "Filis/Datafiler/merged_immunoabundance_clinical.txt",
+            file = "Data/merged_immunoabundance_clinical.txt",
             sep = "\t",
             quote = FALSE,
             row.names = FALSE)
-
