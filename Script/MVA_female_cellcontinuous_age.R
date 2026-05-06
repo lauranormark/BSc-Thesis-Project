@@ -64,7 +64,7 @@ data_female <- data_female %>%
   filter(!is.na(age_group)) %>%
   dplyr::select(-AGE)
 
-#variablerna kan ha olika skala, det här göt att HR blir effekten per SD
+#variablerna kan ha olika skala, det här gör att HR blir effekten per SD
 data_female[cell_types_clean_f] <- scale(data_female[cell_types_clean_f])
 
 # ── 5. FIT MULTIVARIATE COX MODEL ─────────────────────────────────────────────

@@ -111,4 +111,4 @@ forest_male
 
 # ─────────────── 9. SAVE ───────────────────────────────────────────────────────────────────
 
-#ggsave("Plots/forest_MVA_male.pdf", plot = forest_male, width = 10, height = 7)
+ggsave("Plots/forest_MVA_male.pdf", plot = forest_male, width = 10, height = 7)
